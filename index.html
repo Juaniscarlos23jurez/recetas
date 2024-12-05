@@ -3,71 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0d6efd">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <title>App de Recetas</title>
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+  <title>Registro de Recetas - Rosina</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      background-color: #f9f9f9;
+    }
+    .navbar {
+      background-color: #ff7675;
+    }
+    .navbar-brand {
+      color: #fff !important;
+    }
+    .btn-primary {
+      background-color: #ff7675;
+      border-color: #ff7675;
+    }
+    .btn-primary:hover {
+      background-color: #d35454;
+      border-color: #d35454;
+    }
+    h2, h3 {
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-  <header class="bg-primary text-white text-center py-4">
-    <h1>🍴 Mis Recetas</h1>
-  </header>
-  <main class="container my-4">
-    <div class="row">
-      <!-- Formulario -->
-      <div class="col-md-6">
-        <form id="recipe-form" class="bg-light p-4 rounded shadow">
-          <h2 class="text-primary">Registrar nueva receta</h2>
-          <div class="mb-3">
-            <label for="recipe-title" class="form-label">Título de la receta</label>
-            <input type="text" class="form-control" id="recipe-title" placeholder="Ejemplo: Pastel de Chocolate" required>
-          </div>
-          <div class="mb-3">
-            <label for="recipe-description" class="form-label">Descripción</label>
-            <textarea class="form-control" id="recipe-description" placeholder="Describe brevemente la receta..." rows="3" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="recipe-ingredients" class="form-label">Ingredientes</label>
-            <textarea class="form-control" id="recipe-ingredients" placeholder="Lista de ingredientes separados por comas..." rows="4" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="recipe-steps" class="form-label">Pasos</label>
-            <textarea class="form-control" id="recipe-steps" placeholder="Describe los pasos de preparación..." rows="6" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="recipe-time" class="form-label">Tiempo de preparación (minutos)</label>
-            <input type="number" class="form-control" id="recipe-time" placeholder="Ejemplo: 30" min="1" required>
-          </div>
-          <div class="mb-3">
-            <label for="recipe-difficulty" class="form-label">Dificultad</label>
-            <select class="form-select" id="recipe-difficulty" required>
-              <option value="" disabled selected>Selecciona una opción</option>
-              <option value="Fácil">Fácil</option>
-              <option value="Intermedia">Intermedia</option>
-              <option value="Difícil">Difícil</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="recipe-portion" class="form-label">Número de porciones</label>
-            <input type="number" class="form-control" id="recipe-portion" placeholder="Ejemplo: 4" min="1" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Guardar Receta</button>
-        </form>
-      </div>
-
-      <!-- Lista de recetas -->
-      <div class="col-md-6">
-        <section id="recipe-list" class="bg-light p-4 rounded shadow">
-          <h2 class="text-primary">Recetas Guardadas</h2>
-          <p class="text-muted">Aquí aparecerán tus recetas guardadas.</p>
-          <div id="recipes-container"></div>
-        </section>
-      </div>
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/index.html">Rosina Recetas</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/index.html">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/recetas.html">Recetas</a>
+        </li>
+      </ul>
     </div>
-  </main>
+  </nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="app.js"></script>
+  <div class="container mt-5">
+    <h2 class="text-center">Registrar Receta</h2>
+    <form id="formRegistroReceta">
+      <div class="form-group">
+        <label for="nombreReceta">Nombre de la receta</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombreReceta"
+          name="nombreReceta"
+          placeholder="Ejemplo: Pastel de chocolate"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="ingredientes">Ingredientes</label>
+        <textarea
+          class="form-control"
+          id="ingredientes"
+          name="ingredientes"
+          rows="3"
+          placeholder="Lista de ingredientes..."
+          required
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="preparacion">Preparación</label>
+        <textarea
+          class="form-control"
+          id="preparacion"
+          name="preparacion"
+          rows="4"
+          placeholder="Pasos para preparar la receta..."
+          required
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Registrar Receta</button>
+    </form>
+
+    <h3 class="text-center mt-5">Lista de Recetas</h3>
+    <table class="table table-striped mt-3" id="listaRecetas">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Ingredientes</th>
+          <th>Preparación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se agregarán las recetas dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Firebase JS SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <script>
+    // Configuración de Firebase
+   const firebaseConfig = {
+      apiKey: "AIzaSyAwDrPiehFMHQ9yYKRcKkWor02EijUp5gI",
+      authDomain: "sisye-50760.firebaseapp.com",
+      databaseURL: "https://sisye-50760-default-rtdb.firebaseio.com",
+      projectId: "sisye-50760",
+      storageBucket: "sisye-50760.appspot.com",
+      messagingSenderId: "654720267764",
+      appId: "1:654720267764:web:4d9f302012a49dcc3bf5a1",
+      measurementId: "G-6RCT8Z9FTZ"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const recetasRef = database.ref("/Recetas");
+
+    const form = document.getElementById('formRegistroReceta');
+    const listaRecetas = document.getElementById('listaRecetas').querySelector('tbody');
+
+    // Cargar recetas desde Firebase
+    const cargarRecetasDesdeFirebase = () => {
+      recetasRef.once('value', (snapshot) => {
+        const recetas = snapshot.val() || {};
+        actualizarTabla(Object.values(recetas));
+      });
+    };
+
+    // Guardar receta en Firebase
+    const guardarRecetaEnFirebase = (receta) => {
+      recetasRef.push(receta, (error) => {
+        if (error) {
+          console.error('Error al guardar receta en Firebase:', error);
+        } else {
+          console.log('Receta guardada exitosamente');
+        }
+      });
+    };
+
+    // Actualizar tabla de recetas
+    const actualizarTabla = (recetas) => {
+      listaRecetas.innerHTML = '';
+      recetas.forEach((receta, index) => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${receta.nombre}</td>
+          <td>${receta.ingredientes}</td>
+          <td>${receta.preparacion}</td>
+        `;
+        listaRecetas.appendChild(fila);
+      });
+    };
+
+    // Registrar receta
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombreReceta').value;
+      const ingredientes = document.getElementById('ingredientes').value;
+      const preparacion = document.getElementById('preparacion').value;
+
+      const nuevaReceta = { nombre, ingredientes, preparacion };
+      guardarRecetaEnFirebase(nuevaReceta);
+      form.reset();
+
+      cargarRecetasDesdeFirebase();
+    });
+
+    // Inicializar
+    cargarRecetasDesdeFirebase();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
