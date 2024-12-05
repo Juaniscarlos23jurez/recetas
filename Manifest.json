@@ -1,6 +1,6 @@
 {
-    "name": "SYS",
-    "short_name": "Sys",
+    "name": "recetas",
+    "short_name": "recetas",
     "description": "Una aplicación de recetas que funciona offline.",
     "start_url": "/",
     "display": "standalone",
