@@ -1,114 +1,113 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Recetas</title>
+  <title>Recetas</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <div class="container mt-5 p-4" style="background-color: #fdfdfd; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
-    <h2 class="text-center mb-4" style="color: #333; font-weight: bold;">📖 Registro de Recetas</h2>
-    <form id="formRegistroReceta">
-      <div class="form-group">
-        <label for="nombreReceta" style="font-weight: 600;">Nombre de la receta:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="nombreReceta"
-          name="nombreReceta"
-          placeholder="Ejemplo: Pastel de chocolate"
-          required
-          style="border-radius: 5px;"
-        >
+    <div class="container mt-5 p-4" style="background-color: #fff; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+        <h2 class="text-center mb-4" style="color: #007BFF; font-weight: bold;">📖 Registro de Recetas</h2>
+        <form id="formRegistroReceta">
+          <div class="form-group">
+            <label for="nombreReceta" style="font-weight: 600; color: #007BFF;">Nombre de la receta:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombreReceta"
+              name="nombreReceta"
+              placeholder="Ejemplo: Pastel de chocolate"
+              required
+              style="border-radius: 5px;"
+            >
+          </div>
+          <div class="form-group mt-3">
+            <label for="ingredientes" style="font-weight: 600; color: #007BFF;">Ingredientes:</label>
+            <textarea
+              class="form-control"
+              id="ingredientes"
+              name="ingredientes"
+              rows="3"
+              placeholder="Lista de ingredientes separados por comas"
+              required
+              style="border-radius: 5px;"
+            ></textarea>
+          </div>
+          <div class="form-group mt-3">
+            <label for="preparacion" style="font-weight: 600; color: #007BFF;">Preparación:</label>
+            <textarea
+              class="form-control"
+              id="preparacion"
+              name="preparacion"
+              rows="4"
+              placeholder="Describe los pasos para preparar la receta"
+              required
+              style="border-radius: 5px;"
+            ></textarea>
+          </div>
+          <div class="form-group mt-3">
+            <label for="tiempo" style="font-weight: 600; color: #007BFF;">Tiempo de preparación (en minutos):</label>
+            <input
+              type="number"
+              class="form-control"
+              id="tiempo"
+              name="tiempo"
+              placeholder="Ejemplo: 30"
+              required
+              style="border-radius: 5px;"
+            >
+          </div>
+          <div class="form-group mt-3">
+            <label for="categoria" style="font-weight: 600; color: #007BFF;">Categoría:</label>
+            <select class="form-control" id="categoria" name="categoria" required style="border-radius: 5px;">
+              <option value="" disabled selected>Selecciona una categoría</option>
+              <option value="Postre">Postre</option>
+              <option value="Entrada">Entrada</option>
+              <option value="Plato principal">Plato principal</option>
+              <option value="Bebida">Bebida</option>
+            </select>
+          </div>
+          <div class="form-group mt-3">
+            <label for="dificultad" style="font-weight: 600; color: #007BFF;">Dificultad:</label>
+            <select class="form-control" id="dificultad" name="dificultad" required style="border-radius: 5px;">
+              <option value="" disabled selected>Selecciona la dificultad</option>
+              <option value="Fácil">Fácil</option>
+              <option value="Media">Media</option>
+              <option value="Difícil">Difícil</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block mt-4" style="background-color: #007BFF; border-color: #007BFF; font-size: 18px; font-weight: bold;">
+            Registrar Receta
+          </button>
+        </form>
+      
+        <h3 class="text-center mt-5 mb-4" style="color: #007BFF; font-weight: bold;">📋 Lista de Recetas Registradas</h3>
+        <table class="table table-striped mt-3" id="listaRecetas" style="background-color: #fff; border-radius: 10px; overflow: hidden;">
+          <thead style="background-color: #007BFF; color: #fff;">
+            <tr>
+              <th style="text-align: center;">#</th>
+              <th style="text-align: center;">Nombre</th>
+              <th style="text-align: center;">Ingredientes</th>
+              <th style="text-align: center;">Preparación</th>
+              <th style="text-align: center;">Tiempo</th>
+              <th style="text-align: center;">Categoría</th>
+              <th style="text-align: center;">Dificultad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Aquí se agregarán las recetas dinámicamente -->
+          </tbody>
+        </table>
       </div>
-      <div class="form-group mt-3">
-        <label for="ingredientes" style="font-weight: 600;">Ingredientes:</label>
-        <textarea
-          class="form-control"
-          id="ingredientes"
-          name="ingredientes"
-          rows="3"
-          placeholder="Lista de ingredientes separados por comas"
-          required
-          style="border-radius: 5px;"
-        ></textarea>
-      </div>
-      <div class="form-group mt-3">
-        <label for="preparacion" style="font-weight: 600;">Preparación:</label>
-        <textarea
-          class="form-control"
-          id="preparacion"
-          name="preparacion"
-          rows="4"
-          placeholder="Describe los pasos para preparar la receta"
-          required
-          style="border-radius: 5px;"
-        ></textarea>
-      </div>
-      <div class="form-group mt-3">
-        <label for="tiempoPreparacion" style="font-weight: 600;">Tiempo de preparación (minutos):</label>
-        <input
-          type="number"
-          class="form-control"
-          id="tiempoPreparacion"
-          name="tiempoPreparacion"
-          placeholder="Ejemplo: 30"
-          min="1"
-          required
-          style="border-radius: 5px;"
-        >
-      </div>
-      <div class="form-group mt-3">
-        <label for="categoria" style="font-weight: 600;">Categoría:</label>
-        <select class="form-control" id="categoria" name="categoria" required style="border-radius: 5px;">
-          <option value="" disabled selected>Selecciona una categoría</option>
-          <option value="Postre">Postre</option>
-          <option value="Entrada">Entrada</option>
-          <option value="Plato Fuerte">Plato Fuerte</option>
-          <option value="Bebida">Bebida</option>
-        </select>
-      </div>
-      <div class="form-group mt-3">
-        <label for="dificultad" style="font-weight: 600;">Dificultad:</label>
-        <select class="form-control" id="dificultad" name="dificultad" required style="border-radius: 5px;">
-          <option value="" disabled selected>Selecciona la dificultad</option>
-          <option value="Fácil">Fácil</option>
-          <option value="Intermedia">Intermedia</option>
-          <option value="Difícil">Difícil</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block mt-4" style="background-color: #5cb85c; border-color: #5cb85c; font-size: 18px; font-weight: bold;">
-        Registrar Receta
-      </button>
-    </form>
-    <h3 class="text-center mt-5 mb-4" style="color: #555; font-weight: bold;">📋 Lista de Recetas Registradas</h3>
-    <table class="table table-striped mt-3" id="listaRecetas" style="background-color: #fff; border-radius: 10px; overflow: hidden;">
-      <thead style="background-color: #5cb85c; color: #fff;">
-        <tr>
-          <th>#</th>
-          <th>Nombre</th>
-          <th>Ingredientes</th>
-          <th>Preparación</th>
-          <th>Tiempo (min)</th>
-          <th>Categoría</th>
-          <th>Dificultad</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Aquí se agregarán las recetas dinámicamente -->
-      </tbody>
-    </table>
-  </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase JS SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <script>
     // Configuración de Firebase
-  // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAwDrPiehFMHQ9yYKRcKkWor02EijUp5gI",
       authDomain: "sisye-50760.firebaseapp.com",
@@ -119,7 +118,6 @@
       appId: "1:654720267764:web:4d9f302012a49dcc3bf5a1",
       measurementId: "G-6RCT8Z9FTZ"
     };
- 
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const recetasRef = database.ref("/recetas");
@@ -128,6 +126,40 @@
     const listaRecetasElement = document.getElementById('listaRecetas');
     const listaRecetas = listaRecetasElement.querySelector('tbody');
 
+    // Cargar recetas desde Firebase
+    const cargarRecetasDesdeFirebase = () => {
+      recetasRef.once('value', (snapshot) => {
+        const firebaseRecetas = snapshot.val() || {};
+        const firebaseRecetasArray = Object.values(firebaseRecetas);
+        const recetasLocales = JSON.parse(localStorage.getItem('recetas')) || [];
+        const todasLasRecetas = [...firebaseRecetasArray, ...recetasLocales];
+        actualizarTabla(todasLasRecetas);
+      });
+    };
+
+    // Guardar receta en localStorage
+    const guardarRecetaEnLocal = (receta) => {
+      const recetas = JSON.parse(localStorage.getItem('recetas')) || [];
+      recetas.push(receta);
+      localStorage.setItem('recetas', JSON.stringify(recetas));
+    };
+
+    // Enviar recetas pendientes a Firebase
+    const enviarRecetasPendientes = () => {
+      const recetas = JSON.parse(localStorage.getItem('recetas')) || [];
+      if (recetas.length > 0) {
+        recetas.forEach((receta, index) => {
+          recetasRef.push(receta, (error) => {
+            if (!error) {
+              recetas.splice(index, 1); // Eliminar receta enviada
+              localStorage.setItem('recetas', JSON.stringify(recetas));
+            }
+          });
+        });
+      }
+    };
+
+    // Actualizar tabla de recetas
     const actualizarTabla = (recetas) => {
       listaRecetas.innerHTML = '';
       recetas.forEach((receta, index) => {
@@ -137,34 +169,51 @@
           <td>${receta.nombre}</td>
           <td>${receta.ingredientes}</td>
           <td>${receta.preparacion}</td>
-          <td>${receta.tiempoPreparacion}</td>
-          <td>${receta.categoria}</td>
-          <td>${receta.dificultad}</td>
+                    <td>${receta.tiempo }</td>
+
+                              <td>${receta.categoria }</td>
+
+                                        <td>${receta.dificultad}</td>
+
         `;
         listaRecetas.appendChild(fila);
       });
     };
 
+    // Registrar receta
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const nuevaReceta = {
-        nombre: document.getElementById('nombreReceta').value,
-        ingredientes: document.getElementById('ingredientes').value,
-        preparacion: document.getElementById('preparacion').value,
-        tiempoPreparacion: document.getElementById('tiempoPreparacion').value,
-        categoria: document.getElementById('categoria').value,
-        dificultad: document.getElementById('dificultad').value,
-      };
-      recetasRef.push(nuevaReceta);
+      const nombre = document.getElementById('nombreReceta').value;
+      const ingredientes = document.getElementById('ingredientes').value;
+      const preparacion = document.getElementById('preparacion').value;
+      const tiempo  = document.getElementById('tiempo').value;
+      const categoria  = document.getElementById('categoria').value;
+      const dificultad = document.getElementById('dificultad').value;
+
+      const nuevaReceta = { nombre, ingredientes, preparacion,tiempo,categoria,dificultad };
+      guardarRecetaEnLocal(nuevaReceta);
+      actualizarTabla(JSON.parse(localStorage.getItem('recetas')) || []);
       form.reset();
+
+      if (navigator.onLine) {
+        enviarRecetasPendientes();
+      } else {
+        alert('Estás offline. La receta será registrada cuando se restablezca la conexión.');
+      }
     });
 
-    recetasRef.on('value', (snapshot) => {
-      const recetas = snapshot.val() ? Object.values(snapshot.val()) : [];
-      actualizarTabla(recetas);
+    // Escuchar conexión a internet
+    window.addEventListener('online', () => {
+      alert('Conexión restablecida. Enviando recetas pendientes a Firebase...');
+      enviarRecetasPendientes();
     });
+
+    // Inicializar
+    cargarRecetasDesdeFirebase();
   </script>
+
+  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-    
