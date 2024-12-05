@@ -7,11 +7,11 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div class="container mt-5 p-4" style="background-color: #fdfdfd; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
-        <h2 class="text-center mb-4" style="color: #333; font-weight: bold;">📖 Registro de Recetas</h2>
+    <div class="container mt-5 p-4" style="background-color: #fff; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+        <h2 class="text-center mb-4" style="color: #007BFF; font-weight: bold;">📖 Registro de Recetas</h2>
         <form id="formRegistroReceta">
           <div class="form-group">
-            <label for="nombreReceta" style="font-weight: 600;">Nombre de la receta:</label>
+            <label for="nombreReceta" style="font-weight: 600; color: #007BFF;">Nombre de la receta:</label>
             <input
               type="text"
               class="form-control"
@@ -23,7 +23,7 @@
             >
           </div>
           <div class="form-group mt-3">
-            <label for="ingredientes" style="font-weight: 600;">Ingredientes:</label>
+            <label for="ingredientes" style="font-weight: 600; color: #007BFF;">Ingredientes:</label>
             <textarea
               class="form-control"
               id="ingredientes"
@@ -35,7 +35,7 @@
             ></textarea>
           </div>
           <div class="form-group mt-3">
-            <label for="preparacion" style="font-weight: 600;">Preparación:</label>
+            <label for="preparacion" style="font-weight: 600; color: #007BFF;">Preparación:</label>
             <textarea
               class="form-control"
               id="preparacion"
@@ -46,19 +46,53 @@
               style="border-radius: 5px;"
             ></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-block mt-4" style="background-color: #5cb85c; border-color: #5cb85c; font-size: 18px; font-weight: bold;">
+          <div class="form-group mt-3">
+            <label for="tiempo" style="font-weight: 600; color: #007BFF;">Tiempo de preparación (en minutos):</label>
+            <input
+              type="number"
+              class="form-control"
+              id="tiempo"
+              name="tiempo"
+              placeholder="Ejemplo: 30"
+              required
+              style="border-radius: 5px;"
+            >
+          </div>
+          <div class="form-group mt-3">
+            <label for="categoria" style="font-weight: 600; color: #007BFF;">Categoría:</label>
+            <select class="form-control" id="categoria" name="categoria" required style="border-radius: 5px;">
+              <option value="" disabled selected>Selecciona una categoría</option>
+              <option value="Postre">Postre</option>
+              <option value="Entrada">Entrada</option>
+              <option value="Plato principal">Plato principal</option>
+              <option value="Bebida">Bebida</option>
+            </select>
+          </div>
+          <div class="form-group mt-3">
+            <label for="dificultad" style="font-weight: 600; color: #007BFF;">Dificultad:</label>
+            <select class="form-control" id="dificultad" name="dificultad" required style="border-radius: 5px;">
+              <option value="" disabled selected>Selecciona la dificultad</option>
+              <option value="Fácil">Fácil</option>
+              <option value="Media">Media</option>
+              <option value="Difícil">Difícil</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block mt-4" style="background-color: #007BFF; border-color: #007BFF; font-size: 18px; font-weight: bold;">
             Registrar Receta
           </button>
         </form>
       
-        <h3 class="text-center mt-5 mb-4" style="color: #555; font-weight: bold;">📋 Lista de Recetas Registradas</h3>
+        <h3 class="text-center mt-5 mb-4" style="color: #007BFF; font-weight: bold;">📋 Lista de Recetas Registradas</h3>
         <table class="table table-striped mt-3" id="listaRecetas" style="background-color: #fff; border-radius: 10px; overflow: hidden;">
-          <thead style="background-color: #5cb85c; color: #fff;">
+          <thead style="background-color: #007BFF; color: #fff;">
             <tr>
               <th style="text-align: center;">#</th>
               <th style="text-align: center;">Nombre</th>
               <th style="text-align: center;">Ingredientes</th>
               <th style="text-align: center;">Preparación</th>
+              <th style="text-align: center;">Tiempo</th>
+              <th style="text-align: center;">Categoría</th>
+              <th style="text-align: center;">Dificultad</th>
             </tr>
           </thead>
           <tbody>
@@ -66,7 +100,6 @@
           </tbody>
         </table>
       </div>
-      
 
   <!-- Firebase JS SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
