@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -118,138 +119,98 @@
       measurementId: "G-6RCT8Z9FTZ"
     };
     firebase.initializeApp(firebaseConfig);
-    const recetasRef = firebase.database().ref("/recetas");
-    
-    // Elementos del DOM
-    const form = document.getElementById("formRegistroReceta");
-    const listaRecetasElement = document
-      .getElementById("listaRecetas")
-      .querySelector("tbody");
-    
-    // Actualizar tabla
+    const database = firebase.database();
+    const recetasRef = database.ref("/recetas");
+
+    const form = document.getElementById('formRegistroReceta');
+    const listaRecetasElement = document.getElementById('listaRecetas');
+    const listaRecetas = listaRecetasElement.querySelector('tbody');
+
+    // Cargar recetas desde Firebase
+    const cargarRecetasDesdeFirebase = () => {
+      recetasRef.once('value', (snapshot) => {
+        const firebaseRecetas = snapshot.val() || {};
+        const firebaseRecetasArray = Object.values(firebaseRecetas);
+        const recetasLocales = JSON.parse(localStorage.getItem('recetas')) || [];
+        const todasLasRecetas = [...firebaseRecetasArray, ...recetasLocales];
+        actualizarTabla(todasLasRecetas);
+      });
+    };
+
+    // Guardar receta en localStorage
+    const guardarRecetaEnLocal = (receta) => {
+      const recetas = JSON.parse(localStorage.getItem('recetas')) || [];
+      recetas.push(receta);
+      localStorage.setItem('recetas', JSON.stringify(recetas));
+    };
+
+    // Enviar recetas pendientes a Firebase
+    const enviarRecetasPendientes = () => {
+      const recetas = JSON.parse(localStorage.getItem('recetas')) || [];
+      if (recetas.length > 0) {
+        recetas.forEach((receta, index) => {
+          recetasRef.push(receta, (error) => {
+            if (!error) {
+              recetas.splice(index, 1); // Eliminar receta enviada
+              localStorage.setItem('recetas', JSON.stringify(recetas));
+            }
+          });
+        });
+      }
+    };
+
+    // Actualizar tabla de recetas
     const actualizarTabla = (recetas) => {
-      listaRecetasElement.innerHTML = "";
+      listaRecetas.innerHTML = '';
       recetas.forEach((receta, index) => {
-        const fila = document.createElement("tr");
+        const fila = document.createElement('tr');
         fila.innerHTML = `
           <td>${index + 1}</td>
           <td>${receta.nombre}</td>
           <td>${receta.ingredientes}</td>
           <td>${receta.preparacion}</td>
-          <td>${receta.tiempo}</td>
-          <td>${receta.categoria}</td>
-          <td>${receta.dificultad}</td>
-          <td>
-            <button class="btn btn-danger btn-sm" onclick="eliminarReceta('${receta.id}')">Eliminar</button>
-          </td>
+                    <td>${receta.tiempo }</td>
+
+                              <td>${receta.categoria }</td>
+
+                                        <td>${receta.dificultad}</td>
+
         `;
-        listaRecetasElement.appendChild(fila);
+        listaRecetas.appendChild(fila);
       });
     };
-    
-    // Guardar receta en localStorage
-    const guardarRecetaEnLocal = (receta) => {
-      const recetas = JSON.parse(localStorage.getItem("recetas")) || [];
-      recetas.push(receta);
-      localStorage.setItem("recetas", JSON.stringify(recetas));
-    };
-    
-    // Eliminar receta
-   // Eliminar receta
-const eliminarReceta = (id) => {
-  // Eliminar de LocalStorage
-  const recetas = JSON.parse(localStorage.getItem("recetas")) || [];
-  const recetasActualizadas = recetas.filter((receta) => receta.id !== id);
-  localStorage.setItem("recetas", JSON.stringify(recetasActualizadas));
 
-  if (navigator.onLine) {
-    // Eliminar de Firebase
-    recetasRef.child(id).remove((error) => {
-      if (error) {
-        console.error(Error al eliminar receta de Firebase: ${error});
-      } else {
-        console.log(Receta con ID ${id} eliminada de Firebase.);
-        // Actualizar tabla con los datos de Firebase
-        cargarRecetasDesdeFirebase();
-      }
-    });
-  } else {
-    // Si está offline, solo actualizamos la tabla con los datos locales
-    actualizarTabla(recetasActualizadas);
-  }
-};
-
-    // Enviar recetas pendientes
-    const enviarRecetasPendientes = () => {
-      const recetas = JSON.parse(localStorage.getItem("recetas")) || [];
-      recetas.forEach((receta, index) => {
-        const nuevaRecetaRef = recetasRef.push();
-        receta.id = nuevaRecetaRef.key; // Actualizar ID con el generado por Firebase
-        nuevaRecetaRef.set(receta, (error) => {
-          if (!error) {
-            recetas.splice(index, 1); // Eliminar receta enviada
-            localStorage.setItem("recetas", JSON.stringify(recetas));
-          }
-        });
-      });
-    };
-    
     // Registrar receta
-  // Registrar receta
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const nuevaReceta = {
-    nombre: document.getElementById("nombreReceta").value,
-    ingredientes: document.getElementById("ingredientes").value,
-    preparacion: document.getElementById("preparacion").value,
-    tiempo: document.getElementById("tiempo").value,
-    categoria: document.getElementById("categoria").value,
-    dificultad: document.getElementById("dificultad").value,
-  };
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombreReceta').value;
+      const ingredientes = document.getElementById('ingredientes').value;
+      const preparacion = document.getElementById('preparacion').value;
+      const tiempo  = document.getElementById('tiempo').value;
+      const categoria  = document.getElementById('categoria').value;
+      const dificultad = document.getElementById('dificultad').value;
 
-  if (navigator.onLine) {
-    // Guardar en Firebase
-    const nuevaRecetaRef = recetasRef.push();
-    nuevaReceta.id = nuevaRecetaRef.key;
-    nuevaRecetaRef.set(nuevaReceta, (error) => {
-      if (error) {
-        console.error("Error al guardar receta en Firebase:", error);
+      const nuevaReceta = { nombre, ingredientes, preparacion,tiempo,categoria,dificultad };
+      guardarRecetaEnLocal(nuevaReceta);
+      actualizarTabla(JSON.parse(localStorage.getItem('recetas')) || []);
+      form.reset();
+
+      if (navigator.onLine) {
+        enviarRecetasPendientes();
       } else {
-        console.log("Receta guardada en Firebase con ID:", nuevaReceta.id);
-        cargarRecetasDesdeFirebase(); // Actualizar la tabla después de guardar
+        alert('Estás offline. La receta será registrada cuando se restablezca la conexión.');
       }
     });
-  } else {
-    // Guardar en localStorage
-    nuevaReceta.id = Date.now().toString(); // ID temporal
-    guardarRecetaEnLocal(nuevaReceta);
-    alert("Estás offline. La receta será registrada cuando se restablezca la conexión.");
-    actualizarTabla([...JSON.parse(localStorage.getItem("recetas")) || []]); // Actualizar tabla local
-  }
 
-  form.reset();
-});
-
-    // Cargar recetas desde Firebase
-    const cargarRecetasDesdeFirebase = () => {
-      recetasRef.once("value", (snapshot) => {
-        const firebaseRecetas = snapshot.val() || {};
-        const recetasArray = Object.keys(firebaseRecetas).map((key) => ({
-          id: key, // Usar la clave generada por Firebase como ID
-          ...firebaseRecetas[key],
-        }));
-        const recetasLocales = JSON.parse(localStorage.getItem("recetas")) || [];
-        actualizarTabla([...recetasLocales, ...recetasArray]);
-      });
-    };
-    
     // Escuchar conexión a internet
-    window.addEventListener("online", enviarRecetasPendientes);
-    
-    // Cargar recetas al iniciar
+    window.addEventListener('online', () => {
+      alert('Conexión restablecida. Enviando recetas pendientes a Firebase...');
+      enviarRecetasPendientes();
+    });
+
+    // Inicializar
     cargarRecetasDesdeFirebase();
-    </script>
-    
+  </script>
 
   <script src="app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
