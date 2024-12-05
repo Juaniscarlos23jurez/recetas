@@ -168,6 +168,12 @@
           <td>${receta.nombre}</td>
           <td>${receta.ingredientes}</td>
           <td>${receta.preparacion}</td>
+                    <td>${receta.tiempo }</td>
+
+                              <td>${receta.categoria }</td>
+
+                                        <td>${receta.dificultad}</td>
+
         `;
         listaRecetas.appendChild(fila);
       });
@@ -179,8 +185,11 @@
       const nombre = document.getElementById('nombreReceta').value;
       const ingredientes = document.getElementById('ingredientes').value;
       const preparacion = document.getElementById('preparacion').value;
+      const tiempo  = document.getElementById('tiempo').value;
+      const categoria  = document.getElementById('categoria').value;
+      const dificultad = document.getElementById('dificultad').value;
 
-      const nuevaReceta = { nombre, ingredientes, preparacion };
+      const nuevaReceta = { nombre, ingredientes, preparacion,tiempo,categoria,dificultad };
       guardarRecetaEnLocal(nuevaReceta);
       actualizarTabla(JSON.parse(localStorage.getItem('recetas')) || []);
       form.reset();
