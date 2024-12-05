@@ -1,26 +1,16 @@
 // service-worker.js sin Workbox
 
-const CACHE_NAME = 'recetas-cache-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/recetas.html',
-  '/manifest.json',
-  'https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'
-];
-
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
-    })
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    caches.open('static-cache').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+  '/clientes.html',
+  '/gastos.html',
+        '/style.css',
+        '/app.js',
+      ]);
     })
   );
 });
