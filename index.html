@@ -3,82 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Clientes</title>
+  <title>Registro de Recetas - Rosina</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="manifest" href="manifest.json">
-
+  <style>
+    body {
+      background-color: #f9f9f9;
+    }
+    .navbar {
+      background-color: #ff7675;
+    }
+    .navbar-brand {
+      color: #fff !important;
+    }
+    .btn-primary {
+      background-color: #ff7675;
+      border-color: #ff7675;
+    }
+    .btn-primary:hover {
+      background-color: #d35454;
+      border-color: #d35454;
+    }
+    h2, h3 {
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/index.html">Catálogo</a>
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/index.html">Rosina Recetas</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="/gastos.html">Gastos</a>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/index.html">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/clientes.html">Clientes</a>
+          <a class="nav-link text-light" href="/recetas.html">Recetas</a>
         </li>
       </ul>
     </div>
   </nav>
 
   <div class="container mt-5">
-    <h2 class="text-center">Registro de Clientes</h2>
-    <form id="formRegistroCliente">
+    <h2 class="text-center">Registrar Receta</h2>
+    <form id="formRegistroReceta">
       <div class="form-group">
-        <label for="nombre">Nombre</label>
+        <label for="nombreReceta">Nombre de la receta</label>
         <input
           type="text"
           class="form-control"
-          id="nombre"
-          name="nombre"
-          placeholder="Ingrese el nombre del cliente"
+          id="nombreReceta"
+          name="nombreReceta"
+          placeholder="Ejemplo: Pastel de chocolate"
           required
         >
       </div>
       <div class="form-group">
-        <label for="telefono">Teléfono</label>
-        <input
-          type="tel"
-          class="form-control"
-          id="telefono"
-          name="telefono"
-          placeholder="Ingrese el teléfono del cliente"
-          required
-          pattern="^\d{10}$"
-          title="El número de teléfono debe tener 10 dígitos"
-        >
-      </div>
-      <div class="form-group">
-        <label for="direccion">Dirección</label>
+        <label for="ingredientes">Ingredientes</label>
         <textarea
           class="form-control"
-          id="direccion"
-          name="direccion"
-          rows="2"
-          placeholder="Ingrese la dirección del cliente"
+          id="ingredientes"
+          name="ingredientes"
+          rows="3"
+          placeholder="Lista de ingredientes..."
           required
         ></textarea>
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Registrar Cliente</button>
+      <div class="form-group">
+        <label for="preparacion">Preparación</label>
+        <textarea
+          class="form-control"
+          id="preparacion"
+          name="preparacion"
+          rows="4"
+          placeholder="Pasos para preparar la receta..."
+          required
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Registrar Receta</button>
     </form>
 
-    <h3 class="text-center mt-5">Lista de Clientes Registrados</h3>
-    <table class="table table-striped mt-3" id="listaClientes">
+    <h3 class="text-center mt-5">Lista de Recetas</h3>
+    <table class="table table-striped mt-3" id="listaRecetas">
       <thead>
         <tr>
           <th>#</th>
           <th>Nombre</th>
-          <th>Teléfono</th>
-          <th>Dirección</th>
+          <th>Ingredientes</th>
+          <th>Preparación</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Aquí se agregarán los clientes dinámicamente -->
+        <!-- Aquí se agregarán las recetas dinámicamente -->
       </tbody>
     </table>
   </div>
@@ -89,6 +108,7 @@
 
   <script>
     // Configuración de Firebase
+  // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAwDrPiehFMHQ9yYKRcKkWor02EijUp5gI",
       authDomain: "sisye-50760.firebaseapp.com",
@@ -101,89 +121,93 @@
     };
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
-    const clientesRef = database.ref("/Empresas/Cliente");
+    const recetasRef = database.ref("/Recetas");
 
-    const form = document.getElementById('formRegistroCliente');
-    const listaClientes = document.getElementById('listaClientes').querySelector('tbody');
+    const form = document.getElementById('formRegistroReceta');
+    const listaRecetas = document.getElementById('listaRecetas').querySelector('tbody');
 
-    // Cargar clientes desde Firebase
-    const cargarClientesDesdeFirebase = () => {
-      clientesRef.once('value', (snapshot) => {
-        const firebaseClientes = snapshot.val() || {};
-        const firebaseClientesArray = Object.values(firebaseClientes);
-        const clientesLocales = JSON.parse(localStorage.getItem('clientes')) || [];
-        const todosLosClientes = [...clientesLocales, ...firebaseClientesArray];
-        actualizarTabla(todosLosClientes);
-      });
+    // Guardar recetas en localStorage
+    const guardarRecetaEnLocalStorage = (recetas) => {
+      localStorage.setItem('recetas', JSON.stringify(recetas));
     };
 
-    // Guardar cliente en localStorage
-    const guardarClienteEnLocal = (cliente) => {
-      const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-      clientes.push(cliente);
-      localStorage.setItem('clientes', JSON.stringify(clientes));
+    // Cargar recetas desde localStorage
+    const cargarRecetasDesdeLocalStorage = () => {
+      const recetas = JSON.parse(localStorage.getItem('recetas')) || [];
+      actualizarTabla(recetas);
     };
 
-    // Enviar clientes pendientes a Firebase
-    const enviarClientesPendientes = () => {
-      const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-      if (clientes.length > 0) {
-        clientes.forEach((cliente, index) => {
-          clientesRef.push(cliente, (error) => {
-            if (!error) {
-              clientes.splice(index, 1); // Eliminar cliente enviado
-              localStorage.setItem('clientes', JSON.stringify(clientes));
-            }
-          });
-        });
-      }
-    };
-
-    // Actualizar tabla de clientes
-    const actualizarTabla = (clientes) => {
-      listaClientes.innerHTML = '';
-      clientes.forEach((cliente, index) => {
+    // Actualizar tabla de recetas
+    const actualizarTabla = (recetas) => {
+      listaRecetas.innerHTML = '';
+      recetas.forEach((receta, index) => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
           <td>${index + 1}</td>
-          <td>${cliente.nombre}</td>
-          <td>${cliente.telefono}</td>
-          <td>${cliente.direccion}</td>
+          <td>${receta.nombre}</td>
+          <td>${receta.ingredientes}</td>
+          <td>${receta.preparacion}</td>
         `;
-        listaClientes.appendChild(fila);
+        listaRecetas.appendChild(fila);
       });
     };
 
-    // Registrar cliente
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nombre = document.getElementById('nombre').value;
-      const telefono = document.getElementById('telefono').value;
-      const direccion = document.getElementById('direccion').value;
-
-      const nuevoCliente = { nombre, telefono, direccion };
-      guardarClienteEnLocal(nuevoCliente);
-      actualizarTabla(JSON.parse(localStorage.getItem('clientes')) || []);
-      form.reset();
+    // Guardar receta en Firebase y localStorage
+    const guardarReceta = (receta) => {
+      const recetas = JSON.parse(localStorage.getItem('recetas')) || [];
+      recetas.push(receta);
+      guardarRecetaEnLocalStorage(recetas);
 
       if (navigator.onLine) {
-        enviarClientesPendientes();
-      } else {
-        alert('Estás offline. El cliente será registrado cuando se restablezca la conexión.');
+        recetasRef.push(receta);
       }
+    };
+
+    // Manejar el formulario
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombreReceta').value;
+      const ingredientes = document.getElementById('ingredientes').value;
+      const preparacion = document.getElementById('preparacion').value;
+
+      const nuevaReceta = { nombre, ingredientes, preparacion };
+      guardarReceta(nuevaReceta);
+      cargarRecetasDesdeLocalStorage();
+      form.reset();
     });
 
-    // Escuchar conexión a internet
+    // Manejar eventos offline/online
+    window.addEventListener('offline', () => {
+      alert('Estás sin conexión. Las recetas se guardarán localmente.');
+    });
+
     window.addEventListener('online', () => {
-      alert('Conexión restablecida. Enviando clientes pendientes a Firebase...');
-      enviarClientesPendientes();
+      alert('Conexión restablecida. Las recetas pendientes se sincronizarán.');
     });
 
-    // Inicializar
-    cargarClientesDesdeFirebase();
+    // Cargar recetas al iniciar
+    if (navigator.onLine) {
+      recetasRef.once('value', (snapshot) => {
+        const recetas = snapshot.val() ? Object.values(snapshot.val()) : [];
+        guardarRecetaEnLocalStorage(recetas);
+        actualizarTabla(recetas);
+      });
+    } else {
+      cargarRecetasDesdeLocalStorage();
+    }
+
+    // Registro de Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service Worker registrado');
+      });
+    }
   </script>
-      <script  src="app.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+   
+ 
